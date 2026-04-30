@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app import db
 from app.models import Listing, Book, User
+from flask_login import login_required, current_user
 
 listings_bp = Blueprint("listings", __name__)
 
@@ -42,3 +43,21 @@ def get_listings():
         for l in listings
     ]), 200
 
+# Mark listing as completed
+@listings_bp.route("/<listing_id>/complete", methods=["POST"])
+@login_required
+def complete_listing(listing_id):
+    listing = Listing.query.get(listing_id)
+
+    if not listing:
+        return jsonify({"error": "Listing not found"}), 404
+
+    # only owner can mark as completed
+    if listing.user_id != current_user.id:
+        return jsonify({"error": "Not authorized"}), 403
+
+    listing.is_available = False  
+
+    db.session.commit()
+
+    return jsonify({"message": "Listing marked as completed"}), 200
