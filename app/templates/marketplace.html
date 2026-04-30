@@ -1,5 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Marketplace</h1>
+
+<div class="marketplace-layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-section">Navigation</div>
+
+        <div class="sidebar-item active">
+            <div class="sidebar-dot"></div>
+            Marketplace
+        </div>
+
+        <div class="sidebar-item">
+            My Listings
+        </div>
+
+        <div class="sidebar-item">
+            Messages
+        </div>
+
+        <button class="btn-blue sidebar-new-btn">
+            + New Listing
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <div class="main-header">
+            <div class="main-title">Marketplace</div>
+
+            <div class="search-bar">
+                🔍 <input type="text" placeholder="Search listings...">
+            </div>
+        </div>
+
+        <div class="tab-bar">
+            <div class="tab-item active">All</div>
+            <div class="tab-item">For Sale</div>
+            <div class="tab-item">Trade</div>
+            <div class="tab-item">Free</div>
+        </div>
+
+        <div class="card-grid">
+
+            <div class="listing-card">
+                <div class="listing-img">📚</div>
+                <div class="listing-title">Data Structures Textbook</div>
+                <div class="listing-course">CS 202</div>
+                <div class="listing-footer">
+                    <div class="listing-price">$25</div>
+                    <div class="badge badge-sell">Sell</div>
+                </div>
+            </div>
+
+            <div class="listing-card">
+                <div class="listing-img">🧠</div>
+                <div class="listing-title">Calculus Notes</div>
+                <div class="listing-course">MATH 150</div>
+                <div class="listing-footer">
+                    <div class="listing-price">Trade</div>
+                    <div class="badge badge-trade">Trade</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}
