@@ -1,13 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{% block title %}OwlSwap{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}OwlSwap{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
-
-    {% block content %}
-    {% endblock %}
-
+ 
+  <nav class="navbar">
+    <a href="{{ url_for('landing') }}" class="navbar-logo">
+      <div class="navbar-logo-icon">🦉</div>
+      OwlSwap
+    </a>
+    <div class="navbar-links">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('marketplace') }}" {% if request.endpoint == 'marketplace' %}class="active"{% endif %}>Browse</a>
+        <a href="#">My Listings</a>
+        <a href="#">Messages</a>
+        <a href="{{ url_for('auth.logout') }}">Log Out</a>
+        <div class="navbar-avatar">{{ current_user.f_name[:1].upper() }}{{ current_user.l_name[:1].upper() }}</div>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}"><button class="btn-nav-signup">Sign Up</button></a>
+      {% endif %}
+    </div>
+  </nav>
+ 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+ 
+  {% block content %}{% endblock %}
+ 
 </body>
 </html>

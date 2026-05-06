@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}OwlSwap — Create Listing{% endblock %}
+
+{% block content %}
+<div class="marketplace-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-section">Browse</div>
+    <a href="{{ url_for('marketplace') }}" class="sidebar-item">All Listings</a>
+    <div class="sidebar-section">My Account</div>
+    <a href="{{ url_for('my_listings') }}" class="sidebar-item">My Listings</a>
+    <div style="padding: 12px 20px;">
+      <a href="{{ url_for('create_listing_page') }}">
+        <button class="btn-blue" style="width:100%">+ New Listing</button>
+      </a>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <a href="{{ url_for('marketplace') }}"
+       style="font-size:13px;color:#1a3a6b;font-weight:500;display:inline-block;margin-bottom:20px;">
+      ← Back to Marketplace
+    </a>
+
+    <div style="max-width:600px;">
+
+      <h1 style="font-family:'Sora',sans-serif;font-size:24px;font-weight:700;
+                 color:#1e2535;margin-bottom:6px;">
+        Create a Listing
+      </h1>
+      <p style="font-size:14px;color:#8896b3;margin-bottom:28px;">
+        Fill in the details about the book you want to sell or trade.
+      </p>
+
+      <div style="background:white;border:1px solid #e4e9f2;border-radius:14px;
+                  padding:32px;box-shadow:0 2px 16px rgba(26,58,107,0.08);">
+
+        <form method="POST" action="{{ url_for('create_listing_page') }}">
+
+          <!-- Book Info Section -->
+          <div style="margin-bottom:24px;">
+            <h2 style="font-size:14px;font-weight:700;color:#1a3a6b;
+                       text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;
+                       padding-bottom:8px;border-bottom:1px solid #e4e9f2;">
+              Book Information
+            </h2>
+
+            <div class="field">
+              <label for="isbn">ISBN</label>
+              <input type="text" id="isbn" name="isbn"
+                     placeholder="e.g. 978-0134685991" required />
+            </div>
+
+            <div class="field">
+              <label for="title">Book Title</label>
+              <input type="text" id="title" name="title"
+                     placeholder="e.g. Introduction to Algorithms"
+                     value="{{ request.form.get('title', '') }}"
+                     required />
+            </div>
+
+            <div class="field">
+              <label for="author">Author</label>
+              <input type="text" id="author" name="author"
+                     placeholder="e.g. Thomas H. Cormen"
+                     value="{{ request.form.get('author', '') }}"
+                     required />
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="field">
+                <label for="edition">Edition</label>
+                <input type="text" id="edition" name="edition"
+                       placeholder="e.g. 3rd"
+                       value="{{ request.form.get('edition', '') }}" />
+              </div>
+              <div class="field">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year"
+                       placeholder="e.g. 2022"
+                       value="{{ request.form.get('year', '') }}" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Listing Info Section -->
+          <div style="margin-bottom:24px;">
+            <h2 style="font-size:14px;font-weight:700;color:#1a3a6b;
+                       text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;
+                       padding-bottom:8px;border-bottom:1px solid #e4e9f2;">
+              Listing Details
+            </h2>
+
+            <div class="field">
+              <label for="condition">Condition</label>
+              <select id="condition" name="condition" required
+                      style="width:100%;border:1.5px solid #cdd4e4;border-radius:6px;
+                             padding:10px 14px;font-size:14px;color:#1e2535;
+                             background:white;outline:none;">
+                <option value="">Select condition...</option>
+                <option value="NEW"  {% if request.form.get('condition') == 'NEW'  %}selected{% endif %}>New</option>
+                <option value="GOOD" {% if request.form.get('condition') == 'GOOD' %}selected{% endif %}>Good</option>
+                <option value="FAIR" {% if request.form.get('condition') == 'FAIR' %}selected{% endif %}>Fair</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="price">Price (leave blank if trade only)</label>
+              <div style="position:relative;">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);
+                             color:#8896b3;font-size:14px;">$</span>
+                <input type="number" id="price" name="price"
+                       placeholder="0.00" step="0.01" min="0"
+                       value="{{ request.form.get('price', '') }}"
+                       style="padding-left:28px;" />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-submit">
+            Post Listing
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,75 +1,79 @@
 {% extends "base.html" %}
+{% block title %}OwlSwap — Marketplace{% endblock %}
 
 {% block content %}
-
 <div class="marketplace-layout">
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-section">Navigation</div>
+  <aside class="sidebar">
+    <div class="sidebar-section">Browse</div>
+    <div class="sidebar-item active">
+      <div class="sidebar-dot"></div>
+      All Listings
+    </div>
+    <div class="sidebar-item">Textbooks</div>
+    <div class="sidebar-item">Notes</div>
+    <div class="sidebar-item">Supplies</div>
 
-        <div class="sidebar-item active">
-            <div class="sidebar-dot"></div>
-            Marketplace
-        </div>
+    <div class="sidebar-section">My Account</div>
+    <a href="#" class="sidebar-item">My Listings</a>
+    <a href="#" class="sidebar-item">Messages</a>
 
-        <div class="sidebar-item">
-            My Listings
-        </div>
+    <div style="padding: 12px 20px;">
+      <a href="#"><button class="btn-blue" style="width:100%">+ New Listing</button></a>
+    </div>
+  </aside>
 
-        <div class="sidebar-item">
-            Messages
-        </div>
+  <main class="main-content">
 
-        <button class="btn-blue sidebar-new-btn">
-            + New Listing
-        </button>
+    <div class="main-header">
+      <span class="main-title">Marketplace</span>
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" placeholder="Search by title or author..." />
+      </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-
-        <div class="main-header">
-            <div class="main-title">Marketplace</div>
-
-            <div class="search-bar">
-                🔍 <input type="text" placeholder="Search listings...">
-            </div>
-        </div>
-
-        <div class="tab-bar">
-            <div class="tab-item active">All</div>
-            <div class="tab-item">For Sale</div>
-            <div class="tab-item">Trade</div>
-            <div class="tab-item">Free</div>
-        </div>
-
-        <div class="card-grid">
-
-            <div class="listing-card">
-                <div class="listing-img">📚</div>
-                <div class="listing-title">Data Structures Textbook</div>
-                <div class="listing-course">CS 202</div>
-                <div class="listing-footer">
-                    <div class="listing-price">$25</div>
-                    <div class="badge badge-sell">Sell</div>
-                </div>
-            </div>
-
-            <div class="listing-card">
-                <div class="listing-img">🧠</div>
-                <div class="listing-title">Calculus II Fundamentals</div>
-                <div class="listing-course">MATH 150</div>
-                <div class="listing-footer">
-                    <div class="listing-price">Trade</div>
-                    <div class="badge badge-trade">Trade</div>
-                </div>
-            </div>
-
-        </div>
-
+    <div class="tab-bar">
+      <div class="tab-item active">All</div>
+      <div class="tab-item">For Sale</div>
+      <div class="tab-item">Trade</div>
+      <div class="tab-item">Free</div>
     </div>
+
+    <div class="card-grid">
+      {% if listings %}
+        {% for listing in listings %}
+          <div class="listing-card">
+            <div class="listing-img">
+              {% if listing.images %}
+                <img src="{{ listing.images[0].image_url }}" alt="{{ listing.book.title if listing.book else 'Book' }}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;" />
+              {% else %}
+                📚
+              {% endif %}
+            </div>
+            <div class="listing-title">{{ listing.book.title if listing.book else 'Untitled' }}</div>
+            <div class="listing-course">{{ listing.book.author if listing.book else '' }}</div>
+            <div class="listing-footer">
+              <span class="listing-price">
+                {% if listing.price %}${{ listing.price }}{% else %}Trade{% endif %}
+              </span>
+              <span class="badge badge-{{ listing.condition | lower if listing.condition else 'good' }}">
+                {{ listing.condition if listing.condition else 'Good' }}
+              </span>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <h3>No listings yet</h3>
+          <p>Be the first to post a listing for your fellow Owls.</p>
+          <a href="#"><button class="btn-blue">+ Create Listing</button></a>
+        </div>
+      {% endif %}
+    </div>
+
+  </main>
 
 </div>
-
 {% endblock %}
