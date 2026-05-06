@@ -1,7 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from app import db
 
-db = SQLAlchemy()
 
 #user entity
 class User(db.Model):
@@ -46,7 +45,7 @@ class Book(db.Model):
     title = db.Column(db.String(255), nullable=False)
     author = db.Column(db.String(255))
     edition = db.Column(db.String(50))
-    year = db.Column(db.Integer(4))
+    year = db.Column(db.Integer)
     image_url = db.Column(db.Text)
     #relationship
     listings = db.relationship("Listing", backref="book", lazy=True)
@@ -86,8 +85,11 @@ class ListingImage(db.Model):
 #messages to connect to convo chat
 
 class Message(db.Model):
+    __tablename__ = "messages"
     id = db.Column(db.String(20), primary_key=True)
     sender_id = db.Column(db.String(20), db.ForeignKey("users.id"), nullable=False)
+    listing_id = db.Column(db.String(20), db.ForeignKey("listings.id"), nullable=False)
+    receiver_id = db.Column(db.String(20), db.ForeignKey("users.id"), nullable=False)
     conversation_id = db.Column(db.Integer, db.ForeignKey("conversations.id"))
     content = db.Column(db.Text, nullable=False)
     sent_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
