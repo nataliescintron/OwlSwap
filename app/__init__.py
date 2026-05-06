@@ -1,13 +1,16 @@
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
 
 load_dotenv()
 
 from flask import Flask, render_template
 from flask_login import LoginManager, login_required
-from flask_sqlalchemy import SQLAlchemy
+
 import os
 
-db = SQLAlchemy()
 login_manager = LoginManager()
 
 
