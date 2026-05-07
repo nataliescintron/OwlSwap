@@ -9,29 +9,17 @@ auth_bp = Blueprint("auth", __name__)
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
-    """Handle user registration."""
     if current_user.is_authenticated:
         return redirect(url_for("marketplace"))
 
     if request.method == "POST":
-<<<<<<< Updated upstream
-        username = request.form.get("username", "").strip()
-        f_name = username
-        l_name = "User"
-=======
-        f_name = request.form.get("f_name", "").strip()
-        l_name = request.form.get("l_name", "").strip()
->>>>>>> Stashed changes
-        email = request.form.get("email", "").strip()
-        password = request.form.get("password", "")
+        f_name           = request.form.get("f_name", "").strip()
+        l_name           = request.form.get("l_name", "").strip()
+        email            = request.form.get("email", "").strip()
+        password         = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
 
-<<<<<<< Updated upstream
-        if not username or not email or not password or not confirm_password:
-=======
-        print(f"DEBUG: f_name={f_name}, l_name={l_name}, email={email}, password={bool(password)}, confirm={bool(confirm_password)}")
         if not f_name or not l_name or not email or not password or not confirm_password:
->>>>>>> Stashed changes
             flash("All fields are required.", "error")
             return redirect(url_for("auth.register"))
 
@@ -53,33 +41,19 @@ def register():
 
         try:
             user = User(
-<<<<<<< Updated upstream
-                id=email,
-=======
                 id=str(uuid.uuid4())[:20],
->>>>>>> Stashed changes
                 f_name=f_name,
                 l_name=l_name,
                 email=email
             )
             user.set_password(password)
-
             db.session.add(user)
             db.session.commit()
-
             flash("Account created! Please log in.", "success")
             return redirect(url_for("auth.login"))
-<<<<<<< Updated upstream
-
         except Exception as e:
             db.session.rollback()
             flash(f"Registration failed: {e}", "error")
-=======
-        except Exception as e:
-            db.session.rollback()
-            print(f"REGISTRATION ERROR: {e}")
-            flash("Registration failed. Try again.", "error")
->>>>>>> Stashed changes
             return redirect(url_for("auth.register"))
 
     return render_template("register.html")
@@ -87,12 +61,11 @@ def register():
 
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    """Handle user login."""
     if current_user.is_authenticated:
         return redirect(url_for("marketplace"))
 
     if request.method == "POST":
-        email = request.form.get("email", "").strip()
+        email    = request.form.get("email", "").strip()
         password = request.form.get("password", "")
 
         if not email or not password:
@@ -102,28 +75,19 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(password):
-<<<<<<< Updated upstream
-            login_user(user)
-=======
-            login_user(user, remember=request.form.get(
-                "remember_me") is not None)
->>>>>>> Stashed changes
+            login_user(user, remember=request.form.get("remember_me") is not None)
             flash(f"Welcome back, {user.f_name}!", "success")
             return redirect(url_for("marketplace"))
 
-<<<<<<< Updated upstream
         flash("Invalid email or password.", "error")
         return redirect(url_for("auth.login"))
 
-=======
->>>>>>> Stashed changes
     return render_template("login.html")
 
 
 @auth_bp.route("/logout")
 @login_required
 def logout():
-    """Handle user logout."""
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("auth.login"))
