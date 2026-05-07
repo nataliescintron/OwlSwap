@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app import db
-from app.models import Listing, Book, User
+from models import User
 from flask_login import login_required, current_user
 
 listings_bp = Blueprint("listings", __name__)

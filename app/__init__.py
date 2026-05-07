@@ -39,7 +39,7 @@ def create_app():
     # Load logged-in user from session
     @login_manager.user_loader
     def load_user(user_id):
-        from app.models import User
+        from models import User
 
         #TODO: is userid a string or integer?
 

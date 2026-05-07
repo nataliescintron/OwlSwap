@@ -14,11 +14,12 @@ def register():
 
     if request.method == "POST":
         username = request.form.get("username", "").strip()
+        f_name = username
+        l_name = "User"
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
 
-        # Validation
         if not username or not email or not password or not confirm_password:
             flash("All fields are required.", "error")
             return redirect(url_for("auth.register"))
@@ -35,31 +36,31 @@ def register():
             flash("Password must be at least 6 characters.", "error")
             return redirect(url_for("auth.register"))
 
-        #Checks if user exists
         if User.query.filter_by(email=email).first():
             flash("Email already registered.", "error")
             return redirect(url_for("auth.register"))
 
-        if User.query.filter_by(username=username).first():
-            flash("Username already taken.", "error")
-            return redirect(url_for("auth.register"))
-
-        # Create user
         try:
-            user = User(username=username, email=email)
+            user = User(
+                id=email,
+                f_name=f_name,
+                l_name=l_name,
+                email=email
+            )
             user.set_password(password)
+
             db.session.add(user)
             db.session.commit()
+
             flash("Account created! Please log in.", "success")
             return redirect(url_for("auth.login"))
-        except Exception:
+
+        except Exception as e:
             db.session.rollback()
-            flash("Registration failed. Try again.", "error")
+            flash(f"Registration failed: {e}", "error")
             return redirect(url_for("auth.register"))
 
-    # return render_template("register.html")
-    #TODO ADD HTML
-    return "<h1>Register Page (HTML template not connected yet)</h1>"
+    return render_template("register.html")
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
@@ -76,20 +77,17 @@ def login():
             flash("Email and password are required.", "error")
             return redirect(url_for("auth.login"))
 
-        # Check credentials
         user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(password):
-            login_user(user, remember=request.form.get("remember_me") is not None)
-            flash(f"Welcome back, {user.username}!", "success")
+            login_user(user)
+            flash(f"Welcome back, {user.f_name}!", "success")
             return redirect(url_for("marketplace"))
-        else:
-            flash("Invalid email or password.", "error")
-            return redirect(url_for("auth.login"))
 
-    # return render_template("login.html")
-    # todo ADD HTML
-    return "<h1>Login Page (HTML template not connected yet)</h1>"
+        flash("Invalid email or password.", "error")
+        return redirect(url_for("auth.login"))
+
+    return render_template("login.html")
 
 
 @auth_bp.route("/logout")
