@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from app import db
 from models import User
+import uuid
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -13,14 +14,24 @@ def register():
         return redirect(url_for("marketplace"))
 
     if request.method == "POST":
+<<<<<<< Updated upstream
         username = request.form.get("username", "").strip()
         f_name = username
         l_name = "User"
+=======
+        f_name = request.form.get("f_name", "").strip()
+        l_name = request.form.get("l_name", "").strip()
+>>>>>>> Stashed changes
         email = request.form.get("email", "").strip()
         password = request.form.get("password", "")
         confirm_password = request.form.get("confirm_password", "")
 
+<<<<<<< Updated upstream
         if not username or not email or not password or not confirm_password:
+=======
+        print(f"DEBUG: f_name={f_name}, l_name={l_name}, email={email}, password={bool(password)}, confirm={bool(confirm_password)}")
+        if not f_name or not l_name or not email or not password or not confirm_password:
+>>>>>>> Stashed changes
             flash("All fields are required.", "error")
             return redirect(url_for("auth.register"))
 
@@ -42,7 +53,11 @@ def register():
 
         try:
             user = User(
+<<<<<<< Updated upstream
                 id=email,
+=======
+                id=str(uuid.uuid4())[:20],
+>>>>>>> Stashed changes
                 f_name=f_name,
                 l_name=l_name,
                 email=email
@@ -54,10 +69,17 @@ def register():
 
             flash("Account created! Please log in.", "success")
             return redirect(url_for("auth.login"))
+<<<<<<< Updated upstream
 
         except Exception as e:
             db.session.rollback()
             flash(f"Registration failed: {e}", "error")
+=======
+        except Exception as e:
+            db.session.rollback()
+            print(f"REGISTRATION ERROR: {e}")
+            flash("Registration failed. Try again.", "error")
+>>>>>>> Stashed changes
             return redirect(url_for("auth.register"))
 
     return render_template("register.html")
@@ -80,13 +102,21 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and user.check_password(password):
+<<<<<<< Updated upstream
             login_user(user)
+=======
+            login_user(user, remember=request.form.get(
+                "remember_me") is not None)
+>>>>>>> Stashed changes
             flash(f"Welcome back, {user.f_name}!", "success")
             return redirect(url_for("marketplace"))
 
+<<<<<<< Updated upstream
         flash("Invalid email or password.", "error")
         return redirect(url_for("auth.login"))
 
+=======
+>>>>>>> Stashed changes
     return render_template("login.html")
 
 
