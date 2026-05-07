@@ -97,3 +97,8 @@ class Conversation(db.Model):
     user1_id = db.Column(db.String(20), db.ForeignKey("users.id"))
     user2_id = db.Column(db.String(20), db.ForeignKey("users.id"))
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+#to get conversation working
+user1 = db.relationship("User", foreign_keys=[user1_id], backref="conversations_as_user1")
+user2 = db.relationship("User", foreign_keys=[user2_id], backref="conversations_as_user2")
+listing = db.relationship("Listing", backref="conversations")

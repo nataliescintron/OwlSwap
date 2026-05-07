@@ -47,10 +47,15 @@ def send_message(conversation_id):
 
     if not content:
         return jsonify({"error": "Message cannot be empty"}), 400
+    
+    conversation = Conversation.query.get_or_404(conversation_id)
+    receiver_id = conversation.user2_id if conversation.user1_id == current_user.id else conversation.user1_id
 
     message = Message(
         id=str(uuid.uuid4())[:20], # gives the message a unique id to differentiate it
         sender_id=current_user.id,
+        receiver=receiver_id,
+        listing_id=conversation.listing_id,
         conversation_id=conversation_id,
         content=content,
         sent_at=datetime.now(timezone.utc)
