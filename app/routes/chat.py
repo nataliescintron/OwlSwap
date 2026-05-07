@@ -54,7 +54,7 @@ def send_message(conversation_id):
     message = Message(
         id=str(uuid.uuid4())[:20], # gives the message a unique id to differentiate it
         sender_id=current_user.id,
-        receiver=receiver_id,
+        receiver_id=receiver_id,
         listing_id=conversation.listing_id,
         conversation_id=conversation_id,
         content=content,
