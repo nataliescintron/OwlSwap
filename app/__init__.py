@@ -149,19 +149,7 @@ def create_app():
                                active_listings=active,
                                completed_listings=completed)
 
-    @app.route("/profile")
-    @login_required
-    def profile_page():
-        from models import Listing
-        listings = Listing.query.filter_by(user_id=current_user.id).all()
-        total = len(listings)
-        active = len([l for l in listings if l.is_available])
-        completed = len([l for l in listings if not l.is_available])
-        return render_template("profile.html", user=current_user,
-                               listings=listings,
-                               total_listings=total,
-                               active_listings=active,
-                               completed_listings=completed)
+
 
     with app.app_context():
         db.create_all()
