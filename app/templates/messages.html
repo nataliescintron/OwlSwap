@@ -31,7 +31,7 @@
         </div>
         {% if conversations %}
           {% for convo in conversations %}
-            <div onclick="loadConversation({{ convo.id }})"
+            <div onclick="loadConversation('{{ convo.id }}')"
                  style="padding:14px 16px;cursor:pointer;border-bottom:1px solid #f0f3f9;
                         transition:background 0.15s;"
                  onmouseover="this.style.background='#f7f9fc'"
