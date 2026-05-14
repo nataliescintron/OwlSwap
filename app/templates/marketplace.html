@@ -29,43 +29,6 @@
 
   <main class="main-content">
 
-    <!-- STATS BAR -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
-      <div style="background:white;border:1px solid #e4e9f2;border-radius:10px;
-                  padding:16px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="width:40px;height:40px;background:#eef2fa;border-radius:8px;
-                    display:flex;align-items:center;justify-content:center;font-size:20px;">
-          &#128218;
-        </div>
-        <div>
-          <div style="font-size:22px;font-weight:800;color:#1a3a6b;">{{ total_listings }}</div>
-          <div style="font-size:12px;color:#8896b3;">Total Listings</div>
-        </div>
-      </div>
-      <div style="background:white;border:1px solid #e4e9f2;border-radius:10px;
-                  padding:16px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="width:40px;height:40px;background:#e1f5ee;border-radius:8px;
-                    display:flex;align-items:center;justify-content:center;font-size:20px;">
-          &#10003;
-        </div>
-        <div>
-          <div style="font-size:22px;font-weight:800;color:#1d9e75;">{{ available_listings }}</div>
-          <div style="font-size:12px;color:#8896b3;">Available Now</div>
-        </div>
-      </div>
-      <div style="background:white;border:1px solid #e4e9f2;border-radius:10px;
-                  padding:16px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="width:40px;height:40px;background:#fef9e6;border-radius:8px;
-                    display:flex;align-items:center;justify-content:center;font-size:20px;">
-          &#128101;
-        </div>
-        <div>
-          <div style="font-size:22px;font-weight:800;color:#d4a800;">{{ total_users }}</div>
-          <div style="font-size:12px;color:#8896b3;">Students Trading</div>
-        </div>
-      </div>
-    </div>
-
     <!-- HEADER ROW -->
     <div class="main-header">
       <span class="main-title">Marketplace</span>
@@ -144,8 +107,6 @@
               <div style="font-size:11px;color:#1a3a6b;font-weight:500;margin-bottom:8px;">
                 {{ listing.owner.f_name }} {{ listing.owner.l_name }}
               </div>
-              <div class="listing-title">{{ listing.book.title if listing.book else 'Untitled' }}</div>
-              <div class="listing-course">{{ listing.book.author if listing.book else '' }}</div>
               <div class="listing-footer">
                 <span class="listing-price">
                   {% if listing.price %}${{ listing.price }}{% else %}Trade{% endif %}

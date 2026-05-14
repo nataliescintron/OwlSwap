@@ -13,6 +13,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    book_interests = db.Column(db.Text, nullable=True)   
+    rating = db.Column(db.Numeric(3, 2), nullable=True)  
+    rating_count = db.Column(db.Integer, default=0)         
 
     listings = db.relationship(
         "Listing", backref="owner", lazy=True, cascade="all, delete-orphan"

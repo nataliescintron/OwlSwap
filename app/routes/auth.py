@@ -91,3 +91,32 @@ def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("auth.login"))
+
+@auth_bp.route("/profile/update", methods=["POST"])
+@login_required
+def update_profile():
+    f_name          = request.form.get("f_name", "").strip()
+    l_name          = request.form.get("l_name", "").strip()
+    email           = request.form.get("email", "").strip()
+    book_interests  = request.form.get("book_interests", "").strip()
+
+    if not f_name or not l_name or not email:
+        flash("Name and email are required.", "error")
+        return redirect(url_for("profile_page"))
+
+    if not email.endswith("@southernct.edu"):
+        flash("Please use your @southernct.edu email.", "error")
+        return redirect(url_for("profile_page"))
+
+    existing = User.query.filter_by(email=email).first()
+    if existing and existing.id != current_user.id:
+        flash("That email is already in use.", "error")
+        return redirect(url_for("profile_page"))
+
+    current_user.f_name         = f_name
+    current_user.l_name         = l_name
+    current_user.email          = email
+    current_user.book_interests = book_interests
+    db.session.commit()
+    flash("Profile updated!", "success")
+    return redirect(url_for("profile_page"))
