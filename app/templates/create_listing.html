@@ -36,7 +36,7 @@
       <div style="background:white;border:1px solid #e4e9f2;border-radius:14px;
                   padding:32px;box-shadow:0 2px 16px rgba(26,58,107,0.08);">
 
-        <form method="POST" action="{{ url_for('create_listing_page') }}">
+        <form method="POST" action="{{ url_for('create_listing_page') }}" enctype="multipart/form-data">
 
           <!-- Book Info Section -->
           <div style="margin-bottom:24px;">
@@ -49,7 +49,7 @@
             <div class="field">
               <label for="isbn">ISBN</label>
               <input type="text" id="isbn" name="isbn"
-                     placeholder="e.g. 978-0134685991" required />
+                     placeholder="e.g. 978-0134685991 (optional)" />
             </div>
 
             <div class="field">
@@ -115,6 +115,16 @@
                        value="{{ request.form.get('price', '') }}"
                        style="padding-left:28px;" />
               </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="image">Book Photo (optional)</label>
+            <input type="file" id="image" name="image" accept="image/*"
+                   style="width:100%;border:1.5px solid #cdd4e4;border-radius:6px;
+                          padding:10px 14px;font-size:13px;background:white;" />
+            <div style="font-size:11px;color:#8896b3;margin-top:4px;">
+              Upload a photo so buyers can see the book condition
             </div>
           </div>
 
