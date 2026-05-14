@@ -8,30 +8,32 @@ import uuid
 chat = Blueprint("chat", __name__)
 
 @chat.route("/conversation/start", methods=["POST"])
-@login_required # app checks if user is signed in first and foremost
+@login_required
 def start_conversation():
     data = request.json
     listing_id = data["listingID"]
     other_user_id = data["otherUserID"]
 
-    # query checks if convos already exist, if not, make one
-    convo = Conversation.query.filter(
-        (
-            (Conversation.user1_id == current_user.id) &
-            (Conversation.user2_id == other_user_id)
-        ) |
-        (
-            (Conversation.user1_id == other_user_id) &
-            (Conversation.user2_id == current_user.id)
-        )
+    # Look for an existing conversation (both user orders)
+    convo = Conversation.query.filter_by(
+        listing_id=listing_id,
+        user1_id=current_user.id,
+        user2_id=other_user_id
     ).first()
 
+    if not convo:
+        convo = Conversation.query.filter_by(
+            listing_id=listing_id,
+            user1_id=other_user_id,
+            user2_id=current_user.id
+        ).first()
+
+    # If still none, create it
     if not convo:
         convo = Conversation(
             listing_id=listing_id,
             user1_id=current_user.id,
-            user2_id=other_user_id,
-            created_at=datetime.now(timezone.utc)
+            user2_id=other_user_id
         )
         db.session.add(convo)
         db.session.commit()
