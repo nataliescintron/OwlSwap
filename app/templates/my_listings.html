@@ -31,16 +31,39 @@
     <div class="card-grid">
       {% if listings %}
         {% for listing in listings %}
-          <div class="listing-card">
-            <div class="listing-img">
-              {% if listing.images %}
-                <img src="{{ listing.images[0].image_url }}"
-                     alt="book"
-                     style="width:100%;height:100%;object-fit:cover;border-radius:6px;" />
-              {% else %}
-                📚
-              {% endif %}
-            </div>
+        <div class="listing-card">
+        <div class="listing-img"
+            style="
+                width:180px;
+                height:240px;
+                margin:0 auto 18px auto;
+                background:#f0f3f9;
+                border-radius:10px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                overflow:hidden;
+                padding:10px;
+            ">
+
+          {% if listing.images %}
+
+            <img src="{{ listing.images[0].image_url }}"
+                alt="book"
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:contain;
+                    border-radius:8px;
+                " />
+
+          {% else %}
+
+            📚
+
+          {% endif %}
+
+        </div>
             <div class="listing-title">
               {{ listing.book.title if listing.book else 'Unknown Title' }}
             </div>

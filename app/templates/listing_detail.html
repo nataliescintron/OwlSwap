@@ -31,17 +31,20 @@
       <div style="display:flex;gap:32px;flex-wrap:wrap;">
  
         <!-- Book Image -->
-        <div style="width:240px;height:280px;background:#f0f3f9;border-radius:10px;
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:72px;flex-shrink:0;overflow:hidden;">
-          {% if listing.images %}
-            <img src="{{ listing.images[0].image_url }}"
-                 alt="{{ listing.book.title if listing.book else 'Book' }}"
-                 style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />
-          {% else %}
-            &#128218;
-          {% endif %}
-        </div>
+              <div style="width:180px;height:240px;background:#f0f3f9;border-radius:10px;
+                  display:flex;align-items:center;justify-content:center;
+                  font-size:72px;flex-shrink:0;overflow:hidden;
+                  margin:0 auto 20px auto;padding:10px;">
+
+        {% if listing.images %}
+          <img src="{{ listing.images[0].image_url }}"
+              alt="{{ listing.book.title if listing.book else 'Book' }}"
+              style="width:100%;height:100%;object-fit:contain;border-radius:8px;" />
+        {% else %}
+          &#128218;
+        {% endif %}
+
+      </div>
  
         <!-- Book Info -->
         <div style="flex:1;min-width:240px;">
