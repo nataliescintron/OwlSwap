@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Reviews</title>
+</head>
+
+<body style="background:#f4f7fb;font-family:'DM Sans',Arial,sans-serif;">
+
+<div style="max-width:920px;margin:40px auto;padding:0 20px;">
+
+  <!-- Header Card -->
+  <div style="
+      background:white;
+      border:1px solid #e4e9f2;
+      border-radius:18px;
+      padding:30px;
+      box-shadow:0 4px 14px rgba(15,23,42,0.06);
+      margin-bottom:24px;">
+
+    <h1 style="
+        margin:0;
+        color:#1e2535;
+        font-size:32px;
+        font-weight:700;">
+      {{ user.f_name }} {{ user.l_name }}'s Reviews
+    </h1>
+
+    <div style="
+        margin-top:14px;
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        background:#f7f9fc;
+        border:1px solid #e4e9f2;
+        padding:10px 16px;
+        border-radius:999px;
+        font-size:15px;
+        color:#44506b;">
+
+      <span style="font-weight:600;">Average Rating</span>
+
+      <span style="
+          color:#1a3a6b;
+          font-weight:700;
+          font-size:16px;">
+        ⭐ {{ user.average_rating or "New User" }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+
+    <a href="{{ url_for('user_reviews', user_id=user.id) }}"
+       style="
+        padding:11px 18px;
+        border-radius:999px;
+        text-decoration:none;
+        background:#1a3a6b;
+        color:white;
+        font-weight:600;
+        font-size:14px;
+        box-shadow:0 2px 8px rgba(26,58,107,0.18);">
+      All Reviews
+    </a>
+
+    <a href="{{ url_for('user_reviews', user_id=user.id, role='buyer') }}"
+       style="
+        padding:11px 18px;
+        border-radius:999px;
+        text-decoration:none;
+        background:white;
+        border:1px solid #d9e1ef;
+        color:#1e2535;
+        font-weight:600;
+        font-size:14px;">
+      Buyer Reviews
+    </a>
+
+    <a href="{{ url_for('user_reviews', user_id=user.id, role='seller') }}"
+       style="
+        padding:11px 18px;
+        border-radius:999px;
+        text-decoration:none;
+        background:white;
+        border:1px solid #d9e1ef;
+        color:#1e2535;
+        font-weight:600;
+        font-size:14px;">
+      Seller Reviews
+    </a>
+
+  </div>
+
+  <!-- Reviews -->
+  {% for review in reviews %}
+
+    <div style="
+        background:white;
+        border:1px solid #e4e9f2;
+        border-radius:18px;
+        padding:24px;
+        margin-bottom:18px;
+        box-shadow:0 3px 10px rgba(15,23,42,0.05);
+        transition:0.15s;">
+
+      <!-- Top Row -->
+      <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:14px;
+          flex-wrap:wrap;
+          gap:10px;">
+
+        <div style="
+            background:#eef3fb;
+            color:#1a3a6b;
+            padding:8px 14px;
+            border-radius:999px;
+            font-size:14px;
+            font-weight:700;">
+
+          ⭐ {{ review.rating }}/5
+        </div>
+
+        <div style="
+            font-size:13px;
+            font-weight:600;
+            color:#6b7892;
+            text-transform:capitalize;">
+          {{ review.role }} Review
+        </div>
+      </div>
+
+      {% if review.comment %}
+
+        <p style="
+            margin:0;
+            color:#2d3748;
+            line-height:1.7;
+            font-size:15px;">
+          "{{ review.comment }}"
+        </p>
+
+      {% else %}
+
+        <p style="
+            margin:0;
+            color:#8896b3;
+            font-style:italic;
+            font-size:14px;">
+          No written comment provided.
+        </p>
+
+      {% endif %}
+
+    </div>
+
+  {% else %}
+
+    <!-- Empty State -->
+    <div style="
+        background:white;
+        border:1px solid #e4e9f2;
+        border-radius:18px;
+        padding:50px 30px;
+        text-align:center;
+        box-shadow:0 4px 14px rgba(15,23,42,0.05);">
+
+      <div style="font-size:52px;margin-bottom:14px;">⭐</div>
+
+      <h2 style="
+          margin-bottom:10px;
+          color:#1e2535;">
+        No reviews yet
+      </h2>
+
+      <p style="
+          color:#6b7892;
+          font-size:15px;">
+        This user has not received any reviews yet.
+      </p>
+
+    </div>
+
+  {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -194,6 +194,33 @@ def create_app():
                                total_listings=total,
                                active_listings=active,
                                completed_listings=completed)
+    
+    @app.route("/users/<user_id>/reviews")
+    @login_required
+    def user_reviews(user_id):
+        from models import User, Review
+
+        user = User.query.get_or_404(user_id)
+
+        role = request.args.get("role")
+
+        reviews_query = Review.query.filter_by(
+            reviewed_user_id=user.id
+        )
+
+        if role in ["buyer", "seller"]:
+            reviews_query = reviews_query.filter_by(role=role)
+
+        reviews = reviews_query.order_by(
+            Review.created_at.desc()
+        ).all()
+
+        return render_template(
+            "user_reviews.html",
+            user=user,
+            reviews=reviews,
+            role=role
+        )
 
 
     @app.route("/listing/<listing_id>/delete", methods=["POST"])
